@@ -18,20 +18,23 @@ with open('onehot_encoder_geo.pkl', 'rb') as file:
 with open('scaler.pkl', 'rb') as file:
     scaler = pickle.load(file)
 
-# Streamlit app title
+# Streamlit app title and icon
+st.set_page_config(page_title='Customer Churn Prediction', page_icon=':chart_with_upwards_trend:')
 st.title('Customer Churn Prediction')
+st.subheader('Predict the likelihood of customer churn based on various factors.')
 
-# User inputs
-geography = st.selectbox('Geography', onehot_encoder_geo.categories_[0])
-gender = st.selectbox('Gender', label_encoder_gender.classes_)
-age = st.slider('Age', 18, 92)
-balance = st.number_input('Balance', value=0.0)
-credit_score = st.number_input('Credit Score', value=600)
-estimated_salary = st.number_input('Estimated Salary', value=50000.0)
-tenure = st.slider('Tenure', 0, 10)
-num_of_products = st.slider('Number of Products', 1, 4)
-has_cr_card = st.selectbox('Has Credit Card', [0, 1])
-is_active_member = st.selectbox('Is Active Member', [0, 1])
+# Create a sidebar for user inputs
+st.sidebar.header('User Input Parameters')
+geography = st.sidebar.selectbox('Geography', onehot_encoder_geo.categories_[0])
+gender = st.sidebar.selectbox('Gender', label_encoder_gender.classes_)
+age = st.sidebar.slider('Age', 18, 92, value=30)
+balance = st.sidebar.number_input('Balance', value=0.0)
+credit_score = st.sidebar.number_input('Credit Score', value=600)
+estimated_salary = st.sidebar.number_input('Estimated Salary', value=50000.0)
+tenure = st.sidebar.slider('Tenure (Years)', 0, 10)
+num_of_products = st.sidebar.slider('Number of Products', 1, 4)
+has_cr_card = st.sidebar.selectbox('Has Credit Card', [0, 1])
+is_active_member = st.sidebar.selectbox('Is Active Member', [0, 1])
 
 # Prepare the input data as a DataFrame
 input_data = pd.DataFrame({
@@ -48,11 +51,8 @@ input_data = pd.DataFrame({
 
 # One-hot encode the 'Geography' input
 geo_encoded = onehot_encoder_geo.transform([[geography]])
-
-# Convert to dense array if necessary
 if hasattr(geo_encoded, "toarray"):
     geo_encoded = geo_encoded.toarray()
-
 geo_encoded_df = pd.DataFrame(geo_encoded, columns=onehot_encoder_geo.get_feature_names_out(['Geography']))
 
 # Combine one-hot encoded columns with input data
@@ -65,10 +65,34 @@ input_data_scaled = scaler.transform(input_data)
 prediction = model.predict(input_data_scaled)
 prediction_proba = prediction[0][0]
 
-# Display churn probability and prediction
-st.write(f'Churn Probability: {prediction_proba:.2f}')
+# Display results in the main area
+st.markdown("---")
+st.header('Prediction Results')
+st.write(f'**Churn Probability:** {prediction_proba:.2f}')
 
 if prediction_proba > 0.5:
-    st.write('The customer is likely to churn.')
+    st.error('The customer is likely to churn.')
 else:
-    st.write('The customer is not likely to churn.')
+    st.success('The customer is not likely to churn.')
+
+# Add some styling
+st.markdown("""
+<style>
+    .reportview-container {
+        background-color: #f0f2f5;
+    }
+    .sidebar .sidebar-content {
+        background-color: #ffffff;
+        border-radius: 10px;
+    }
+    .stButton>button {
+        background-color: #4CAF50; /* Green */
+        color: white;
+    }
+    .stButton>button:hover {
+        background-color: #45a049; /* Darker green */
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("<footer style='text-align: center;'>Built with ❤️ by Vigneshwar B.</footer>", unsafe_allow_html=True)
