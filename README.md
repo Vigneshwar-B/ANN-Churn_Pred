@@ -5,7 +5,7 @@
 ![image](https://github.com/user-attachments/assets/d1394818-4d07-4e0a-82f2-831915ad3a8c)
 
 
-## Overview
+### Overview
 
 The Customer Churn Prediction project aims to predict the likelihood of customer churn based on various input features. The application utilizes a trained Artificial Neural Network (ANN) model to analyze user input and provide predictions.
 
