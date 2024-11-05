@@ -4,6 +4,7 @@ import tensorflow as tf
 from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
 import pandas as pd
 import pickle
+import seaborn as sns
 
 # Load the trained model with compile=False to avoid optimizer-related errors
 model = tf.keras.models.load_model('model.h5', compile=False)
