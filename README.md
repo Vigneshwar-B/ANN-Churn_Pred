@@ -1,5 +1,6 @@
 # Customer Churn Prediction
 
+
 ![Churn Prediction](https://via.placeholder.com/800x200.png?text=Customer+Churn+Prediction)
 
 ![image](https://github.com/user-attachments/assets/d1394818-4d07-4e0a-82f2-831915ad3a8c)
