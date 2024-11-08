@@ -6,8 +6,14 @@ import pandas as pd
 import pickle
 import seaborn as sns
 
+
+
+
+
+
 # Load the trained model with compile=False to avoid optimizer-related errors
 model = tf.keras.models.load_model('model.h5', compile=False)
+
 
 # Load the encoders and scaler
 with open('label_encoder_gender.pkl', 'rb') as file:
